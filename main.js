@@ -1,12 +1,13 @@
 var page = require('page')
 
-page('/', root)
+page('/', logRootRoute)
 page('/:argument', argument)
 // page('/user/:id', user.load, user.show)
 // page('/user/:id/edit', user.load, user.edit)
 // page('*', notfound)
 
-function root(...args) {
+function logRootRoute(...args) {
+  console.log('root')
   console.log(args)
 }
 
