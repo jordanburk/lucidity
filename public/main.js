@@ -3,7 +3,7 @@ var page = require('page');
 console.log(page);
 
 page('/', logRootRoute);
-page('/:argument', argument);
+page('/:page', getPage);
 // page('/user/:id', user.load, user.show)
 // page('/user/:id/edit', user.load, user.edit)
 page('*', somethingElse);
@@ -14,8 +14,8 @@ function logRootRoute(...args) {
   console.log(args);
 }
 
-function argument(...args) {
-  console.log(args);
+function getPage(context, next) {
+  console.log(context.params.page);
 }
 
 function somethingElse(...args) {
