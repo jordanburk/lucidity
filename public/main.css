@@ -30,10 +30,6 @@ img {
 	justify-content: center;
 }
 
-#text-container {
-	padding: 10px;
-}
-
 #mobile-nav,
 .mobile-tab {
 	display: none;
@@ -41,6 +37,8 @@ img {
 
 @media screen and (max-width: 800px) {
 	#all {
+		display: flex;
+		flex-flow: column;
 		top: 0;
 		right: 0;
 		bottom: 0;
@@ -49,9 +47,9 @@ img {
 	}
 
 	#header {
+		flex: 0 0 42px;
 		padding-top: 10px;
 		background-color: #ddd;
-		height: 42px;
 		overflow: visible;
 		box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.4);
 	}
@@ -60,28 +58,30 @@ img {
 		height: 51px;
 	}
 
+	#content-container {
+		flex: 1 1 100%;
+	}
+
+	.content {
+		padding: 30px;
+	}
+
 	.text {
 		margin: 0;
-		padding: 20px;
-		background-color: #fff;
-		border-radius: 10px;
+		line-height: 1.4;
 	}
 
 	#mobile-nav {
 		display: flex;
+		flex: 0 0 52px;
 		margin: 0;
 		padding: 0;
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 0;
 		background-color: #eee;
 	}
 
 	.mobile-tab {
 		display: block;
 		flex: 0 0 auto;
-		height: 30px;
 		padding: 12px 6px;
 	}
 
