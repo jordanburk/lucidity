@@ -1,4 +1,4 @@
-var page = require('page')
+require('page')
 
 page('/', logRootRoute)
 page('/:argument', argument)
