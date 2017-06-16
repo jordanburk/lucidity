@@ -22,7 +22,7 @@ function getRoot(...args) {
 
 function getAbout(context, next) {
   var elements = document.getElementsByClassName('text')
-  elements[0].innerHTML = entries[entry].text;
+  elements[0].innerHTML = entries[0].text;
 }
 
 function getEntry(context, next) {
@@ -53,5 +53,5 @@ function clickLast() {
 }
 
 function clickFirst() {
-  page('/0');
+  page('/1');
 }
