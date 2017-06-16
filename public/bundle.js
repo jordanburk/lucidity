@@ -233,8 +233,8 @@ function getRoot(...args) {
 }
 
 function getAbout(context, next) {
-  var elements = document.getElementsByClassName('text')
-  elements[0].innerHTML = entries[0].text;
+  currentPage = 0;
+  nextEntry();
 }
 
 function getEntry(context, next) {
