@@ -252,6 +252,7 @@ function somethingElse(...args) {
 function nextEntry(entry) {
   var elements = document.getElementsByClassName('text')
   console.log(elements[0]);
+  debugger
   elements[0].innerHTML = entries[entry].text;
 }
 

@@ -4,10 +4,9 @@ var cap = entries.length - 1;
 var currentPage;
 
 document.addEventListener('DOMContentLoaded', function() {
-  page('/', logRootRoute);
-  page('/test', pageTest);
+  page('/', getRoot);
+  page('/about', getAbout);
   page('/:entry', getEntry);
-  page('*', somethingElse);
   page();
 
   document.getElementById('next').addEventListener('click', clickNext);
@@ -16,31 +15,29 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('first').addEventListener('click', clickFirst);
 })
 
-function logRootRoute(...args) {
-  console.log('root!');
+function getRoot(...args) {
+  currentPage = cap;
+  nextEntry();
+}
+
+function getAbout(context, next) {
+  var elements = document.getElementsByClassName('text')
+  elements[0].innerHTML = entries[entry].text;
 }
 
 function getEntry(context, next) {
   var entry = parseInt(context.params.entry);
+  if (!(entry === entry)) { page('/'); }
   if (entry > cap) { entry = cap; }
-  if (entry < 0) { entry = 0; }
+  if (entry < 1) { entry = 1; }
   currentPage = entry;
-  nextEntry(entry);
+  nextEntry();
 }
 
-function pageTest() {
-  console.log(ctx);
 
-}
-
-function somethingElse(...args) {
-  console.log('other!');
-}
-
-function nextEntry(entry) {
+function nextEntry() {
   var elements = document.getElementsByClassName('text')
-  console.log(elements[0]);
-  elements[0].innerHTML = entries[entry].text;
+  elements[0].innerHTML = entries[currentPage].text;
 }
 
 function clickNext() {
