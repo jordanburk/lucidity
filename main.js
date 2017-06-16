@@ -1,57 +1,73 @@
 var page = require('page');
-var entries = require('./entries.json');
-var cap = entries.length - 1;
-var currentPage;
+var database = firebase.database()
+var currentPage = 1;
+var entries, cap;
 
-document.addEventListener('DOMContentLoaded', function() {
-  page('/', getRoot);
-  page('/about', getAbout);
-  page('/:entry', getEntry);
-  page();
+database.ref().once('value')
+  .then( function(snapshot, error) {
+    entries = snapshot.val().posts;
+    cap = entries.length - 1;
+    renderEntry();
+  }).catch( function(error) {
+    console.log(error);
+  })
 
-  document.getElementById('next').addEventListener('click', clickNext);
-  document.getElementById('last').addEventListener('click', clickLast);
-  document.getElementById('previous').addEventListener('click', clickPrevious);
-  document.getElementById('first').addEventListener('click', clickFirst);
-})
+var text = document.getElementsByClassName('text')[0]
+document.getElementById('next').addEventListener('click', nextEntry);
+document.getElementById('last').addEventListener('click', lastEntry);
+document.getElementById('previous').addEventListener('click', previousEntry);
+document.getElementById('first').addEventListener('click', firstEntry);
+
+page('/', getRoot);
+page('/about', getAbout);
+page('/:entry', getEntry);
+page();
 
 function getRoot(...args) {
   currentPage = cap;
-  nextEntry();
+  renderEntry();
 }
 
 function getAbout(context, next) {
   currentPage = 0;
-  nextEntry();
+  renderEntry();
 }
 
 function getEntry(context, next) {
   var entry = parseInt(context.params.entry);
-  if (!(entry === entry)) { page('/'); }
-  if (entry > cap) { entry = cap; }
-  if (entry < 1) { entry = 1; }
-  currentPage = entry;
-  nextEntry();
+  if (!(entry === entry)) {
+    page.redirect('/');
+  } else {
+    currentPage = entry
+    renderEntry();
+  }
 }
 
+function renderEntry() {
+  if (!entries) { return }
+  if (currentPage > cap) {
+    page.redirect('/' + cap)
+    return;
+  }
+  if (currentPage < 1) {
+    page.redirect('/1')
+    return;
+  }
+  text.innerHTML = entries[currentPage].text;
+}
 
 function nextEntry() {
-  var elements = document.getElementsByClassName('text')
-  elements[0].innerHTML = entries[currentPage].text;
-}
-
-function clickNext() {
   page('/' + (currentPage + 1));
 }
 
-function clickPrevious() {
+function previousEntry() {
   page('/' + (currentPage - 1));
 }
 
-function clickLast() {
+function lastEntry() {
   page('/' + cap);
 }
 
-function clickFirst() {
+function firstEntry() {
   page('/1');
 }
