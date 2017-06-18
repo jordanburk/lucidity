@@ -4,7 +4,10 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "browserify main.js > public/bundle.js",
+    "serve": "npm run bundle && firebase serve",
+    "deploy": "npm run bundle && firebase deploy"
   },
   "repository": {
     "type": "git",

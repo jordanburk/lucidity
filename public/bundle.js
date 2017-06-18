@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var page = require('page');
 var database = firebase.database()
+
 var currentPage = 1;
 var entries, cap;
 
@@ -18,20 +19,45 @@ document.getElementById('next').addEventListener('click', nextEntry);
 document.getElementById('last').addEventListener('click', lastEntry);
 document.getElementById('previous').addEventListener('click', previousEntry);
 document.getElementById('first').addEventListener('click', firstEntry);
+document.getElementById('mobile-spacer').addEventListener('click', neww);
+
+var box = document.createElement('textarea');
+var button = document.createElement('button');
+box.id = 'box';
 
 page('/', getRoot);
+page('/new', getNew);
 page('/about', getAbout);
+page('/edit/:entry', getEdit);
 page('/:entry', getEntry);
+
+page.exit('/edit/*', leaveEdit);
+page.exit('/about', leaveEdit);
+
 page();
 
-function getRoot(...args) {
-  currentPage = cap;
+function getRoot() {
+  if (cap) { currentPage = cap; }
   renderEntry();
+}
+
+function getNew() {
+  box.innerHTML = '';
+  button.onclick = createEntry;
+  button.innerHTML = 'Create Entry';
+  text.innerHTML = '';
+  text.appendChild(box);
+  text.appendChild(button);
+}
+
+function getEdit() {
+  console.log('heya');
 }
 
 function getAbout(context, next) {
   currentPage = 0;
-  renderEntry();
+  if (!entries) { return; }
+  text.innerHTML = entries[0].text;
 }
 
 function getEntry(context, next) {
@@ -57,6 +83,10 @@ function renderEntry() {
   text.innerHTML = entries[currentPage].text;
 }
 
+function leaveEdit() {
+  console.log('leaving edit');
+}
+
 function nextEntry() {
   page('/' + (currentPage + 1));
 }
@@ -71,6 +101,18 @@ function lastEntry() {
 
 function firstEntry() {
   page('/1');
+}
+
+function neww() {
+  page('/new');
+}
+
+function createEntry() {
+  var content = document.getElementById('box').value;
+  entries.push({ text: content });
+  cap += 1;
+  database.ref('posts').set(entries);
+  page.redirect('/' + cap);
 }
 
 },{"page":3}],2:[function(require,module,exports){
