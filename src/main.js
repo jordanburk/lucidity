@@ -1,11 +1,11 @@
 var page = require('page');
 var database = firebase.database()
 
-var state = require('./src/state.js')
-var fn = require('./src/functions.js')
+var state = require('./state.js')
+var fn = require('./functions.js')
 
-require('./src/dom.js')
-require('./src/routes.js');
+require('./dom.js')
+require('./routes.js');
 
 database.ref().once('value')
   .then( function(snapshot, error) {
