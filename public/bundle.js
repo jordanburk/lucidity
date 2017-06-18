@@ -2,120 +2,22 @@
 var page = require('page');
 var database = firebase.database()
 
-var currentPage = 1;
-var entries, cap;
+var state = require('./src/state.js')
+var fn = require('./src/functions.js')
+
+require('./src/dom.js')
+require('./src/routes.js');
 
 database.ref().once('value')
   .then( function(snapshot, error) {
-    entries = snapshot.val().posts;
-    cap = entries.length - 1;
-    renderEntry();
+    state.entries = snapshot.val().posts;
+    state.cap = state.entries.length - 1;
+    fn.renderEntry();
   }).catch( function(error) {
     console.log(error);
   })
 
-var text = document.getElementsByClassName('text')[0]
-document.getElementById('next').addEventListener('click', nextEntry);
-document.getElementById('last').addEventListener('click', lastEntry);
-document.getElementById('previous').addEventListener('click', previousEntry);
-document.getElementById('first').addEventListener('click', firstEntry);
-document.getElementById('mobile-spacer').addEventListener('click', neww);
-
-var box = document.createElement('textarea');
-var button = document.createElement('button');
-box.id = 'box';
-
-page('/', getRoot);
-page('/new', getNew);
-page('/about', getAbout);
-page('/edit/:entry', getEdit);
-page('/:entry', getEntry);
-
-page.exit('/edit/*', leaveEdit);
-page.exit('/about', leaveEdit);
-
-page();
-
-function getRoot() {
-  if (cap) { currentPage = cap; }
-  renderEntry();
-}
-
-function getNew() {
-  box.innerHTML = '';
-  button.onclick = createEntry;
-  button.innerHTML = 'Create Entry';
-  text.innerHTML = '';
-  text.appendChild(box);
-  text.appendChild(button);
-}
-
-function getEdit() {
-  console.log('heya');
-}
-
-function getAbout(context, next) {
-  currentPage = 0;
-  if (!entries) { return; }
-  text.innerHTML = entries[0].text;
-}
-
-function getEntry(context, next) {
-  var entry = parseInt(context.params.entry);
-  if (!(entry === entry)) {
-    page.redirect('/');
-  } else {
-    currentPage = entry
-    renderEntry();
-  }
-}
-
-function renderEntry() {
-  if (!entries) { return }
-  if (currentPage > cap) {
-    page.redirect('/' + cap)
-    return;
-  }
-  if (currentPage < 1) {
-    page.redirect('/1')
-    return;
-  }
-  text.innerHTML = entries[currentPage].text;
-}
-
-function leaveEdit() {
-  console.log('leaving edit');
-}
-
-function nextEntry() {
-  page('/' + (currentPage + 1));
-}
-
-function previousEntry() {
-  page('/' + (currentPage - 1));
-}
-
-function lastEntry() {
-  page('/' + cap);
-}
-
-function firstEntry() {
-  page('/1');
-}
-
-function neww() {
-  page('/new');
-}
-
-function createEntry() {
-  var content = document.getElementById('box').value;
-  entries.push({ text: content });
-  cap += 1;
-  database.ref('posts').set(entries);
-  page.redirect('/' + cap);
-}
-
-},{"page":3}],2:[function(require,module,exports){
+},{"./src/dom.js":6,"./src/functions.js":7,"./src/routes.js":8,"./src/state.js":9,"page":3}],2:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
@@ -1323,5 +1225,146 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
+
+},{}],6:[function(require,module,exports){
+var fn = require('./functions.js');
+
+var text = document.getElementsByClassName('text')[0]
+document.getElementById('next').addEventListener('click', fn.nextEntry);
+document.getElementById('last').addEventListener('click', fn.lastEntry);
+document.getElementById('previous').addEventListener('click', fn.previousEntry);
+document.getElementById('first').addEventListener('click', fn.firstEntry);
+document.getElementById('mobile-spacer').addEventListener('click', fn.neww);
+
+var box = document.createElement('textarea');
+var button = document.createElement('button');
+box.id = 'box';
+
+module.exports = {
+  text,
+  box,
+  button
+};
+
+},{"./functions.js":7}],7:[function(require,module,exports){
+var dom = require ('./dom.js');
+var state = require('./state.js');
+var database = firebase.database();
+var page = require('page');
+
+function renderEntry() {
+  if (!state.entries) { return }
+  if (state.currentPage > state.cap) {
+    page.redirect('/' + state.cap)
+    return;
+  }
+  if (state.currentPage < 1) {
+    page.redirect('/1')
+    return;
+  }
+  dom.text.innerHTML = state.entries[state.currentPage].text;
+}
+
+function nextEntry() {
+  page('/' + (state.currentPage + 1));
+}
+
+function previousEntry() {
+  page('/' + (state.currentPage - 1));
+}
+
+function lastEntry() {
+  page('/' + state.cap);
+}
+
+function firstEntry() {
+  page('/1');
+}
+
+function neww() {
+  page('/new');
+}
+
+function createEntry() {
+  var content = dom.box.value;
+  state.entries.push({ text: content });
+  state.cap += 1;
+  database.ref('posts').set(state.entries);
+  page.redirect('/' + state.cap);
+}
+
+module.exports = {
+  renderEntry,
+  nextEntry,
+  previousEntry,
+  firstEntry,
+  lastEntry,
+  neww,
+  createEntry
+};
+
+},{"./dom.js":6,"./state.js":9,"page":3}],8:[function(require,module,exports){
+var page = require('page');
+var fn = require('./functions.js');
+var dom = require('./dom.js');
+
+page('/', getRoot);
+page('/new', getNew);
+page('/about', getAbout);
+page('/edit/:entry', getEdit);
+page('/:entry', getEntry);
+
+page.exit('/edit/*', leaveEdit);
+page.exit('/about', leaveEdit);
+
+page();
+
+function getRoot(context, next) {
+  if (state.cap) { state.currentPage = state.cap; }
+  fn.renderEntry();
+}
+
+function getNew(context, next) {
+  dom.box.innerHTML = '';
+  dom.button.onclick = fn.createEntry;
+  dom.button.innerHTML = 'Create Entry';
+  dom.text.innerHTML = '';
+  dom.text.appendChild(dom.box);
+  dom.text.appendChild(dom.button);
+}
+
+function getEdit(context, next) {
+  console.log('heya');
+}
+
+function getAbout(context, next) {
+  state.currentPage = 0;
+  if (!state.entries) { return; }
+  text.innerHTML = state.entries[0].text;
+}
+
+function getEntry(context, next) {
+  var entry = parseInt(context.params.entry);
+  if (!(entry === entry)) {
+    page.redirect('/');
+  } else {
+    state.currentPage = entry
+    fn.renderEntry();
+  }
+}
+
+function leaveEdit(context, next) {
+  console.log('leaving edit');
+}
+
+},{"./dom.js":6,"./functions.js":7,"page":3}],9:[function(require,module,exports){
+var currentPage = 1;
+var entries, cap;
+
+module.exports = {
+  currentPage,
+  entries,
+  cap
+};
 
 },{}]},{},[1]);
