@@ -34,7 +34,10 @@ module.exports = {
             options: {
               presets: [ 'env' ],
               plugins: [
-                ['transform-react-jsx', { pragma: "require('preact').h" }]
+                [
+                  'transform-react-jsx', { pragma: "require('preact').h" }
+                ],
+                'transform-object-rest-spread'
               ]
             }
           },

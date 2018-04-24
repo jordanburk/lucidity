@@ -16,14 +16,15 @@
   },
   "dependencies": {
     "firebase": "4.8.0",
+    "lodash.get": "^4.4.2",
     "preact": "^8.2.7",
-    "preact-router": "^2.6.0",
-    "unistore": "^3.0.4"
+    "preact-router": "^2.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",

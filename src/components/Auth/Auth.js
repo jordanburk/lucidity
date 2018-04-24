@@ -1,6 +1,5 @@
 import { Component } from 'preact'
-import { connect } from 'unistore/preact'
-import { authActions } from 'store/auth'
+import { auth } from 'utils/firebase'
 
 class Auth extends Component {
   constructor (props) {
@@ -14,7 +13,9 @@ class Auth extends Component {
 
   submit (e) {
     e.preventDefault()
-    this.props.logIn(this.state.password)
+    auth().signInWithEmailAndPassword('jordan@lucidity.firebase', this.state.password)
+      .then(res => console.log('logged in!'))
+      .catch(error => console.log({ error }))
   }
 
   change (e) {
@@ -22,7 +23,7 @@ class Auth extends Component {
   }
 
   render (props, state) {
-    const { auth } = props
+    const auth = {}
     return (
       <div>
         { !auth.uid &&
@@ -37,7 +38,4 @@ class Auth extends Component {
   }
 }
 
-export default connect(
-  'auth',
-  authActions
-)(Auth)
+export default Auth

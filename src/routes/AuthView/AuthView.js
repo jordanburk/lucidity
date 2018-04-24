@@ -5,6 +5,7 @@ const AuthView = () => {
     <div>
       <h2>Authentication</h2>
       <Auth />
+      <a href='/'>home</a>
     </div>
   )
 }
