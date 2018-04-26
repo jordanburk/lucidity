@@ -1,0 +1,32 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: url('../assets/decs/hypnotize.png');
+}
+
+.app {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 800px;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 15vh;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    padding-top: 16px;
+    overflow-x: hidden;
+  }
+}

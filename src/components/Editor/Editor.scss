@@ -1,0 +1,44 @@
+.editor {
+  width: 65%;
+  margin: 0 auto;
+  padding-bottom: 24px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  font-size: 1.25em;
+}
+
+.text {
+  display: block;
+  width: 100%;
+  height: 300px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.example {
+  margin: 8px;
+  margin-left: 0;
+  font-family: inherit;
+  font-size: 2rem;
+
+  &:hover {
+    border-color: black;
+    cursor: pointer;
+  }
+}
+
+.imageName {
+  display: block;
+  margin: 8px 8px 0 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.save,
+.view {
+  margin: 8px 8px 0 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}

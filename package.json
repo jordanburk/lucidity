@@ -1,7 +1,7 @@
 {
-  "name": "genesis",
+  "name": "lucidity",
   "version": "1.0.0",
-  "description": "Preact + unistore + Firebase",
+  "description": "musings from the great northwest",
   "main": "src/genesis.js",
   "repository": "github:jordanburk/genesis.git",
   "author": "Jordan Burk",
@@ -18,7 +18,8 @@
     "firebase": "4.8.0",
     "lodash.get": "^4.4.2",
     "preact": "^8.2.7",
-    "preact-router": "^2.6.0"
+    "preact-router": "^2.6.0",
+    "url-loader": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

@@ -1,9 +1,11 @@
 import { Component } from 'preact'
 import Router from 'preact-router'
-import AuthView from 'routes/AuthView'
-import ReadView from 'routes/ReadView'
-import EditView from 'routes/EditView'
+import Auth from 'components/Auth'
+import Reader from 'components/Reader'
+import Editor from 'components/Editor'
+import Header from 'components/Header'
 import Nav from 'components/Nav'
+import styles from './App.scss'
 import { db } from 'utils/firebase'
 
 class App extends Component {
@@ -53,16 +55,21 @@ class App extends Component {
 
   render (props, state) {
     const { scenes } = state
-    const id = String(Object.keys(scenes).length + 1)
+    const length = Object.keys(scenes).length
+    // const currentId = String(length)
+    const newId = String(length + 1)
     return (
-      <main id='app'>
-        <h1>lucidity</h1>
+      <main className={styles.app}>
+        <Header />
         <Nav scenes={scenes} />
+        { length === 0 && <h2>Loading</h2> }
+        { !scenes && <h2>Loading</h2> }
         <Router>
-          <AuthView path='/login' />
-          <EditView path='/new' blank id={id} scenes={scenes} updateScene={this.updateScene} />
-          <EditView path='/:id/edit' scenes={scenes} updateScene={this.updateScene} />
-          <ReadView path='/:id?' scenes={scenes} />
+          <Auth path='/login' />
+          <Editor path='/new' blank id={newId} scenes={scenes} updateScene={this.updateScene} />
+          <Editor path='/:id/edit' scenes={scenes} updateScene={this.updateScene} />
+          <Reader path='/' id='1' scenes={scenes} />
+          <Reader path='/:id?' scenes={scenes} />
         </Router>
       </main>
     )

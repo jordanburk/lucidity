@@ -1,7 +1,7 @@
 import { Component } from 'preact'
 import { auth } from 'utils/firebase'
 
-class Auth extends Component {
+class AuthView extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -38,4 +38,4 @@ class Auth extends Component {
   }
 }
 
-export default Auth
+export default AuthView

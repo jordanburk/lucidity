@@ -1,0 +1,44 @@
+.column {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  &_next,
+  &_prev {
+    display: none;
+  }
+
+  @media screen and (max-width: 500px) {
+    position: absolute;
+    right: 0;
+    left: 0;
+    max-height: 100%;
+    padding: 0 16px 16px;
+    overflow-y: scroll;
+
+    &_prev {
+      display: flex;
+      transform: translateX(-100%);
+    }
+
+    &_next {
+      display: flex;
+      transform: translateX(100%);
+    }
+  }
+}
+
+.number {
+  margin: 16px 0;
+  color: #666;
+  font-style: italic;
+}
+
+.text {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.image {
+  margin-top: 16px;
+}

@@ -1,0 +1,53 @@
+.nav {
+  position: relative;
+  width: 100%;
+  margin-top: -18px;
+
+  @media screen and (max-width: 500px) {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
+.rule {
+  display: none;
+
+  @media screen and (max-width: 500px) {
+    display: block;
+    border-top: 1px solid black;
+  }
+}
+
+.last {
+  position: absolute;
+  top: 87px;
+  right: 20px;
+}
+
+.first {
+  position: absolute;
+  top: 88px;
+  left: 20px;
+}
+
+.previous {
+  position: absolute;
+  top: 48px;
+  left: 0;
+}
+
+.next {
+  position: absolute;
+  top: 45px;
+  right: 0;
+}
+
+.arrow {
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
+
+  & :hover {
+    opacity: 0.6;
+  }
+}
