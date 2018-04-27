@@ -57,10 +57,14 @@ class EditView extends Component {
   }
 
   render (props, state) {
-    const { scenes, id, blank } = props
+    const { scenes, blank } = props
+    let { id } = props
     const loaded = (blank || (scenes && scenes[id]))
     if (!loaded) { return null }
-
+    if (!id) {
+      const length = Object.keys(scenes).length
+      id = String(length + 1)
+    }
     const { text, image } = state
     const src = image && require(`assets/imgs/${image}.png`)
 

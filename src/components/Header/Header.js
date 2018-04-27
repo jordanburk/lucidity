@@ -1,10 +1,10 @@
 import styles from './Header.scss'
-import lucidity from 'assets/decs/lucidity.png'
+import Lucidity from 'components/svgs/lucidity.js'
 
 const Header = () => (
   <h1 className={styles.header}>
-    <a href='/'>
-      <img src={lucidity} alt='lucidity' />
+    <a className={styles.frame} href='/'>
+      <Lucidity className={styles.lucidity} />
     </a>
   </h1>
 )

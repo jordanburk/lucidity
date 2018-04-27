@@ -42,12 +42,16 @@
   right: 0;
 }
 
-.arrow {
+.link {
   @media screen and (max-width: 500px) {
     display: none;
   }
 
-  & :hover {
+  &:hover {
     opacity: 0.6;
   }
+}
+
+.arrow {
+  height: 36px;
 }

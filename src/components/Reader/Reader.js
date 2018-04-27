@@ -9,6 +9,7 @@ class ReadView extends Component {
     this.touchStart = this.touchStart.bind(this)
     this.touchMove = this.touchMove.bind(this)
     this.touchEnd = this.touchEnd.bind(this)
+    this.slideSpeed = 0.25
     this.state = {
       offset: 0,
       forward: false,
@@ -18,6 +19,19 @@ class ReadView extends Component {
   }
 
   touchStart (e) {
+    const { forward, backward } = this.state
+    if (forward || backward) {
+      const { id } = this.props
+      this.animation && clearTimeout(this.animation)
+      if (forward) {
+        this.setState({ forward: false })
+        route(`/${parseInt(id) + 1}`, true)
+      }
+      if (backward) {
+        this.setState({ backward: false })
+        route(`/${parseInt(id) - 1}`, true)
+      }
+    }
     this.x = e.changedTouches[0].clientX
   }
 
@@ -38,18 +52,16 @@ class ReadView extends Component {
     let forward, backward
     if (offset < -10) {
       forward = true
-      setTimeout(() => {
-        this.setState(
-          { forward: false },
-          () => route(`/${parseInt(id) + 1}`, true)
-        )
-      }, 200)
+      this.animation = setTimeout(() => {
+        this.setState({ forward: false })
+        route(`/${parseInt(id) + 1}`, true)
+      }, 1000 * this.slideSpeed)
     } else if (offset > 10) {
       backward = true
-      setTimeout(() => {
+      this.animation = setTimeout(() => {
         this.setState({ backward: false })
         route(`/${parseInt(id) - 1}`, true)
-      }, 200)
+      }, 1000 * this.slideSpeed)
     }
     this.x = 0
     this.setState({
@@ -61,7 +73,8 @@ class ReadView extends Component {
 
   render (props, state) {
     const { id, scenes } = props
-    if (!scenes) { return null }
+    if (!scenes) { return <div className={styles.reader} /> }
+
     const scene = scenes[id]
     if (scenes[1] && !scene) {
       route('/', true)
@@ -72,17 +85,17 @@ class ReadView extends Component {
     const prev = scenes[prevId]
     const { offset, forward, backward } = state
     let transform = null
-    let transition = 'transform 0.2s'
+    let transition = null
     if (forward) {
-      transform = 'translateX(-100%)'
+      transform = 'translateX(-66.666667%)'
+      transition = `transform ${this.slideSpeed}s`
     } else if (backward) {
-      transform = 'translateX(100%)'
+      transform = 'translateX(0)'
+      transition = `transform ${this.slideSpeed}s`
     } else if (offset) {
-      transform = `translateX(${offset}px)`
-    } else {
-      // if we don't have a specified translate, we are resetting
-      transition = null
+      transform = `translateX(calc(-33% + ${offset}px))`
     }
+
     return (
       <div
         className={styles.reader}
@@ -94,9 +107,9 @@ class ReadView extends Component {
           transition
         }}
       >
-        { prev && <Column column='prev' scene={prev} id={prevId} /> }
+        { prev && <Column column='side' scene={prev} id={prevId} /> }
         { scene && <Column column='' scene={scene} id={id} /> }
-        { next && <Column column='next' scene={next} id={nextId} /> }
+        { next && <Column column='side' scene={next} id={nextId} /> }
       </div>
     )
   }

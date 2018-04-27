@@ -14,7 +14,7 @@ class App extends Component {
     this.state = {
       loading: true,
       error: null,
-      scenes: {}
+      scenes: null
     }
     this.updateScene = this.updateScene.bind(this)
   }
@@ -55,18 +55,13 @@ class App extends Component {
 
   render (props, state) {
     const { scenes } = state
-    const length = Object.keys(scenes).length
-    // const currentId = String(length)
-    const newId = String(length + 1)
     return (
       <main className={styles.app}>
         <Header />
         <Nav scenes={scenes} />
-        { length === 0 && <h2>Loading</h2> }
-        { !scenes && <h2>Loading</h2> }
         <Router>
           <Auth path='/login' />
-          <Editor path='/new' blank id={newId} scenes={scenes} updateScene={this.updateScene} />
+          <Editor path='/new' blank scenes={scenes} updateScene={this.updateScene} />
           <Editor path='/:id/edit' scenes={scenes} updateScene={this.updateScene} />
           <Reader path='/' id='1' scenes={scenes} />
           <Reader path='/:id?' scenes={scenes} />
