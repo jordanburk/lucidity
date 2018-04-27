@@ -66,7 +66,7 @@ class EditView extends Component {
       id = String(length + 1)
     }
     const { text, image } = state
-    const src = image && require(`assets/imgs/${image}.png`)
+    const Image = image && require(`components/svgs/${image}`).default
 
     return (
       <div className={styles.editor}>
@@ -79,7 +79,7 @@ class EditView extends Component {
           <button className={styles.example} onClick={this.insert}>–</button>
         </div>
         <textarea className={styles.text} onChange={this.textChange} value={text} />
-        { src && <img src={src} /> }
+        { image && <Image className={styles.image} /> }
         <input className={styles.imageName} onChange={this.imageChange} value={image} />
         <button className={styles.save} onClick={this.save}>Save</button>
         <a href={`/${id}`}><button className={styles.view}>View</button></a>
