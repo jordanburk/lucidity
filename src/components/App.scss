@@ -45,6 +45,10 @@ body {
     width: 75%;
   }
 
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
+
   a {
     margin-right: 16px;
     color: #666;

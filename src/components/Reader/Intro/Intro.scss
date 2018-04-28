@@ -1,0 +1,25 @@
+.intro {
+  width: 100%;
+}
+
+.recent,
+.swipe {
+  display: block;
+  margin-bottom: 32px;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  text-decoration: none;
+}
+
+.recent:hover {
+  text-decoration: underline;
+}
+
+.swipe {
+  display: none;
+
+  @media screen and (max-width: 500px) {
+    display: block;
+  }
+}

@@ -16,6 +16,11 @@ class ReadView extends Component {
       backward: false
     }
     this.x = 0
+    this.y = null
+    this.scrolling = false
+    this.swiping = false
+    this.flick = true
+    this.flickFunc = null
   }
 
   touchStart (e) {
@@ -33,15 +38,32 @@ class ReadView extends Component {
       }
     }
     this.x = e.changedTouches[0].clientX
+    this.y = e.changedTouches[0].clientY
+    this.flick = true
+    this.flickFunc = setTimeout(() => {
+      this.flick = false
+    }, 300)
   }
 
   touchMove (e) {
+    if (this.scrolling) { return }
+    const touch = e.changedTouches[0]
+    if (!this.swiping) {
+      const deltaX = touch.clientX - this.x
+      const deltaY = touch.clientY - this.y
+      this.y = null
+      if (Math.abs(deltaY / deltaX) > 1) {
+        this.scrolling = true
+        return
+      }
+      this.swiping = true
+    }
     const { id, scenes } = this.props
-    let offset = e.changedTouches[0].clientX - this.x
+    let offset = touch.clientX - this.x
     const first = id === '1' && offset > 0
     const last = offset < 0 && parseInt(id) === Object.keys(scenes).length
     if (first || last) {
-      this.x = e.changedTouches[0].clientX
+      this.x = touch.clientX
       offset = 0
     }
     this.setState({
@@ -53,13 +75,13 @@ class ReadView extends Component {
     const { id } = this.props
     const { offset } = this.state
     let forward, backward
-    if (offset < -10) {
+    if (offset < -30 || (this.flick && offset < -4)) {
       forward = true
       this.animation = setTimeout(() => {
         this.setState({ forward: false })
         route(`/${parseInt(id) + 1}`, true)
       }, 1000 * this.slideSpeed)
-    } else if (offset > 10) {
+    } else if (offset > 30 || (this.flick && offset > 4)) {
       backward = true
       this.animation = setTimeout(() => {
         this.setState({ backward: false })
@@ -67,6 +89,10 @@ class ReadView extends Component {
       }, 1000 * this.slideSpeed)
     }
     this.x = 0
+    this.scrolling = false
+    this.swiping = false
+    this.flick = false
+    this.flickFunc && clearTimeout(this.flickFunc)
     this.setState({
       offset: 0,
       forward,
@@ -78,14 +104,12 @@ class ReadView extends Component {
     const { id, scenes } = props
     if (!scenes) { return <div className={styles.reader} /> }
 
-    const scene = scenes[id]
-    if (scenes[1] && !scene) {
+    if (scenes[1] && !scenes[id]) {
       route('/', true)
     }
     const nextId = parseInt(id) + 1
     const prevId = parseInt(id) - 1
-    const next = scenes[nextId]
-    const prev = scenes[prevId]
+
     const { offset, forward, backward } = state
     let transform = null
     let transition = null
@@ -110,9 +134,9 @@ class ReadView extends Component {
           transition
         }}
       >
-        <Column column='side' scene={prev} id={prevId} />
-        <Column column='' scene={scene} id={id} />
-        <Column column='side' scene={next} id={nextId} />
+        <Column column='side' scenes={scenes} id={prevId} />
+        <Column column='' scenes={scenes} id={id} />
+        <Column column='side' scenes={scenes} id={nextId} />
       </div>
     )
   }
