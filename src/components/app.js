@@ -21,7 +21,12 @@ class App extends Component {
   }
 
   componentWillMount () {
-    if (window.localStorage['firebase:host:lucidity-bc272.firebaseio.com']) {
+    // note: In newer firebase versions (starting with 4.12.0)
+    // auth uses indexedDB instead of localStorage
+    const userKey = Object.keys(window.localStorage)
+      .filter(it => it.startsWith('firebase:authUser'))[0]
+    const user = JSON.parse(window.localStorage.getItem(userKey))
+    if (user) {
       this.setState({ loggedIn: true })
     }
     db.collection('scenes').get()
