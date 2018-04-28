@@ -13,7 +13,6 @@ module.exports = {
     devtoolModuleFilenameTemplate: '[resourcePath]',
     devtoolFallbackModuleFilenameTemplate: '[resourcePath]?[hash]'
   },
-  target: 'node',
   resolve: {
     modules: [ path.resolve(__dirname, 'src'), 'node_modules' ]
   },

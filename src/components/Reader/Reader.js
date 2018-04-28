@@ -36,8 +36,11 @@ class ReadView extends Component {
   }
 
   touchMove (e) {
+    const { id, scenes } = this.props
     let offset = e.changedTouches[0].clientX - this.x
-    if (this.props.id === '1' && offset > 0) {
+    const first = id === '1' && offset > 0
+    const last = offset < 0 && parseInt(id) === Object.keys(scenes).length
+    if (first || last) {
       this.x = e.changedTouches[0].clientX
       offset = 0
     }
@@ -107,9 +110,9 @@ class ReadView extends Component {
           transition
         }}
       >
-        { prev && <Column column='side' scene={prev} id={prevId} /> }
-        { scene && <Column column='' scene={scene} id={id} /> }
-        { next && <Column column='side' scene={next} id={nextId} /> }
+        <Column column='side' scene={prev} id={prevId} />
+        <Column column='' scene={scene} id={id} />
+        <Column column='side' scene={next} id={nextId} />
       </div>
     )
   }
