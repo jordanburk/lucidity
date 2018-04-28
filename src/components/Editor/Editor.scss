@@ -28,10 +28,6 @@
   }
 }
 
-.image {
-  height: 72px;
-}
-
 .imageName {
   display: block;
   margin: 8px 8px 0 0;
@@ -45,4 +41,15 @@
   font-family: inherit;
   font-size: inherit;
   cursor: pointer;
+}
+
+.left {
+  display: inline-block;
+}
+
+.image {
+  height: 72px;
+  margin-top: 8px;
+  margin-right: 16px;
+  margin-bottom: -16px;
 }

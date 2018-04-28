@@ -1,4 +1,5 @@
 import { Component } from 'preact'
+import { route } from 'preact-router'
 import { auth } from 'utils/firebase'
 
 class AuthView extends Component {
@@ -14,7 +15,10 @@ class AuthView extends Component {
   submit (e) {
     e.preventDefault()
     auth().signInWithEmailAndPassword('jordan@lucidity.firebase', this.state.password)
-      .then(res => console.log('logged in!'))
+      .then(res => {
+        this.props.logIn()
+        route('/1')
+      })
       .catch(error => console.log({ error }))
   }
 
@@ -27,7 +31,7 @@ class AuthView extends Component {
     return (
       <div>
         { !auth.uid &&
-          <form onSubmit={this.submit}>
+          <form style={{ 'margin-top': '16px' }} onSubmit={this.submit}>
             <input onChange={this.change} type='text' value={state.password} />
             <input type='submit' value='Log In' />
           </form>

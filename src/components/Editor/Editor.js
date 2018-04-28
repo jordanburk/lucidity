@@ -47,7 +47,10 @@ class EditView extends Component {
     if (blank) {
       return { text: '', image: '' }
     } else if (scenes && scenes[id]) {
-      return scenes[id]
+      return {
+        text: scenes[id].text || '',
+        image: scenes[id].image || ''
+      }
     }
   }
 
@@ -80,9 +83,11 @@ class EditView extends Component {
         </div>
         <textarea className={styles.text} onChange={this.textChange} value={text} />
         { image && <Image className={styles.image} /> }
-        <input className={styles.imageName} onChange={this.imageChange} value={image} />
-        <button className={styles.save} onClick={this.save}>Save</button>
-        <a href={`/${id}`}><button className={styles.view}>View</button></a>
+        <div className={styles.left}>
+          <input className={styles.imageName} onChange={this.imageChange} value={image} />
+          <button className={styles.save} onClick={this.save}>Save</button>
+          <a href={`/${id}`}><button className={styles.view}>View</button></a>
+        </div>
       </div>
     )
   }

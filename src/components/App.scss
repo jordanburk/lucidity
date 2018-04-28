@@ -26,9 +26,33 @@ body {
   margin: 0 auto;
   padding-top: 15vh;
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 800px) {
     width: 100%;
+    padding-top: 10vh;
+  }
+
+  @media screen and (max-width: 500px) {
     padding-top: 16px;
     overflow-x: hidden;
+  }
+}
+
+.adminLinks {
+  width: 65%;
+  padding: 4px;
+
+  @media screen and (max-width: 800px) {
+    width: 75%;
+  }
+
+  a {
+    margin-right: 16px;
+    color: #666;
+    font-style: italic;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

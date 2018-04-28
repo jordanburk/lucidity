@@ -7,13 +7,9 @@ musings from the great northwest
 - turn scenes into double linked list
 - add about, links, etc
 - investigate firebase package size
-- add tablet sizes
-- add edit & new buttons
 - revisit desktop arrows
 - add an intro screen with links, or add links below scene 1
 - or add a menu or sorts
-- investigate wraparound on last scene
-- arrow key navigation
 
 ## get started
 

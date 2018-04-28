@@ -17,9 +17,13 @@ class App extends Component {
       scenes: null
     }
     this.updateScene = this.updateScene.bind(this)
+    this.logIn = this.logIn.bind(this)
   }
 
   componentWillMount () {
+    if (window.localStorage['firebase:host:lucidity-bc272.firebaseio.com']) {
+      this.setState({ loggedIn: true })
+    }
     db.collection('scenes').get()
       .then(snapshot => {
         const scenes = {}
@@ -53,19 +57,32 @@ class App extends Component {
     )
   }
 
+  logIn () {
+    this.setState({ loggedIn: true })
+  }
+
   render (props, state) {
-    const { scenes } = state
+    const { scenes, loggedIn } = state
+    const EditLink = ({ id }) => <a href={`/${id}/edit`}>edit scene</a>
     return (
       <main className={styles.app}>
         <Header />
         <Nav scenes={scenes} />
         <Router>
-          <Auth path='/login' />
+          <Auth path='/login' logIn={this.logIn} />
           <Editor path='/new' blank scenes={scenes} updateScene={this.updateScene} />
           <Editor path='/:id/edit' scenes={scenes} updateScene={this.updateScene} />
           <Reader path='/' id='1' scenes={scenes} />
           <Reader path='/:id?' scenes={scenes} />
         </Router>
+        { loggedIn &&
+          <div className={styles.adminLinks}>
+            <Router>
+              <EditLink path='/:id' />
+            </Router>
+            <a href='/new'>new scene</a>
+          </div>
+        }
       </main>
     )
   }
